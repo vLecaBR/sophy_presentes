@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap");
+
+.font-logo {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+.font-sans-modern {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* Custom scrollbar — Sophy theme */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #dc8494 #fbe9ed;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: #fbe9ed;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #dc8494;
+  border-radius: 999px;
+  border: 2px solid #fbe9ed;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #cf4e71;
+}
