@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { ArrowLeft, Truck, Shield, Gift, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -9,30 +12,37 @@ import { WhatsAppIcon } from "./SophyHeader";
 
 interface Props {
   product: Product;
-  onBack: () => void;
+  onBack?: () => void;
 }
 
 export function ProductDetailView({ product, onBack }: Props) {
-  const handleWhatsApp = () => {
-    const msg = encodeURIComponent(
-      `Olá Sophy Presentes! Tenho interesse no produto: ${product.name} - ${formatBRL(
-        product.price,
-      )}`,
-    );
-    window.open(`https://wa.me/5516988523009?text=${msg}`, "_blank");
-  };
+  const [currentUrl, setCurrentUrl] = useState("");
+
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
+
+  const whatsappText = `Olá, tenho interesse no produto: ${product.name}. Veja o link: ${currentUrl}`;
+  const whatsappUrl = `https://wa.me/5516988523009?text=${encodeURIComponent(whatsappText)}`;
 
   return (
     <div className="bg-[#fbe9ed] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Button
-          variant="ghost"
-          onClick={onBack}
-          className="text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-6 -ml-2 rounded-full"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          Voltar à vitrine
-        </Button>
+        {onBack ? (
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            className="text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-6 -ml-2 rounded-full"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Voltar à vitrine
+          </Button>
+        ) : (
+          <a href="/" className="inline-flex items-center text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-6 -ml-2 rounded-full px-4 py-2 font-medium transition-colors">
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Voltar à vitrine
+          </a>
+        )}
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-14">
           {/* Image side */}
@@ -131,8 +141,10 @@ export function ProductDetailView({ product, onBack }: Props) {
             </Card>
 
             {/* MEGA CTA */}
-            <button
-              onClick={handleWhatsApp}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group w-full relative inline-flex items-center justify-center gap-3 h-16 rounded-2xl text-white text-lg shadow-2xl shadow-[#cf4e71]/40 hover:shadow-[#cf4e71]/60 hover:-translate-y-0.5 transition-all"
               style={{
                 background:
@@ -145,7 +157,7 @@ export function ProductDetailView({ product, onBack }: Props) {
               <span className="ml-1 group-hover:translate-x-1 transition-transform">
                 →
               </span>
-            </button>
+            </a>
             <p className="text-center text-xs text-[#dc8494] mt-3">
               Resposta rápida pelo WhatsApp · +55 16 98852-3009
             </p>

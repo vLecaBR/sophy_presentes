@@ -1,4 +1,7 @@
-import { useState, useRef } from "react";
+"use client";
+
+import { useState, useRef, useEffect, useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import {
   Plus,
   Pencil,
@@ -14,6 +17,7 @@ import {
   Settings,
   BarChart3,
   X,
+  Loader2,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -31,13 +35,10 @@ import {
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { BRANDS, formatBRL, type Brand, type Product } from "./sophy-data";
 import { SophyLogo } from "./SophyLogo";
+import { createProduct, updateProduct, deleteProduct } from "../actions/product";
 
 interface Props {
   products: Product[];
-  onCreate: (p: Omit<Product, "id">) => void;
-  onUpdate: (p: Product) => void;
-  onDelete: (id: string) => void;
-  onExit: () => void;
 }
 
 const empty = {
@@ -48,49 +49,80 @@ const empty = {
   image: "",
 };
 
-export function AdminView({
-  products,
-  onCreate,
-  onUpdate,
-  onDelete,
-  onExit,
-}: Props) {
+function SubmitButton({ isEditing }: { isEditing: boolean }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      className="w-full bg-[#cf4e71] hover:bg-[#b8425f] text-white rounded-full h-11 mt-2 shadow-md shadow-[#cf4e71]/25 disabled:opacity-70"
+    >
+      {pending ? (
+        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+      ) : (
+        <Plus className="h-4 w-4 mr-1" />
+      )}
+      {pending
+        ? "Salvando..."
+        : isEditing
+        ? "Salvar alterações"
+        : "Adicionar produto"}
+    </Button>
+  );
+}
+
+function DeleteButton({ id, imageUrl }: { id: string, imageUrl: string }) {
+  const [state, formAction, pending] = useActionState(deleteProduct, null);
+  
+  return (
+    <form action={formAction}>
+      <input type="hidden" name="id" value={id} />
+      <input type="hidden" name="imageUrl" value={imageUrl} />
+      <button
+        type="submit"
+        disabled={pending}
+        className="h-9 w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors disabled:opacity-50"
+        aria-label="Excluir"
+      >
+        {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+      </button>
+    </form>
+  );
+}
+
+export function AdminView({ products }: Props) {
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState(empty);
   const [search, setSearch] = useState("");
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [createState, createAction] = useActionState(createProduct, null);
+  const [updateState, updateAction] = useActionState(updateProduct, null);
+
   const reset = () => {
     setEditing(null);
     setForm(empty);
+    if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+    }
   };
+
+  useEffect(() => {
+    if (createState?.success || updateState?.success) {
+      reset();
+    }
+  }, [createState, updateState]);
 
   const openEdit = (p: Product) => {
     setEditing(p);
     setForm({
       name: p.name,
-      description: p.description,
+      description: p.description || "",
       price: String(p.price),
-      brand: p.brand,
+      brand: p.brand as Brand,
       image: p.image,
     });
-  };
-
-  const handleSubmit = () => {
-    if (!form.name || !form.brand || !form.price) return;
-    const payload = {
-      name: form.name,
-      description: form.description,
-      price: parseFloat(form.price) || 0,
-      brand: form.brand as Brand,
-      image:
-        form.image ||
-        "https://images.unsplash.com/photo-1588184843119-7749bc0b1055?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800&q=80",
-    };
-    if (editing) onUpdate({ ...editing, ...payload });
-    else onCreate(payload);
-    reset();
   };
 
   const readFile = (file: File) => {
@@ -109,7 +141,14 @@ export function AdminView({
     e.preventDefault();
     setDragOver(false);
     const f = e.dataTransfer.files?.[0];
-    if (f) readFile(f);
+    if (f) {
+      if (fileInputRef.current) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(f);
+        fileInputRef.current.files = dataTransfer.files;
+      }
+      readFile(f);
+    }
   };
 
   const filtered = products.filter((p) =>
@@ -154,7 +193,6 @@ export function AdminView({
         </nav>
         <div className="p-4 border-t border-white/15">
           <button
-            onClick={onExit}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/90 hover:bg-white/10"
           >
             <LogOut className="h-4 w-4" />
@@ -169,7 +207,6 @@ export function AdminView({
         <div className="lg:hidden bg-[#dc8494] text-white px-4 h-16 flex items-center justify-between sticky top-0 z-20">
           <SophyLogo tone="light" size="sm" />
           <Button
-            onClick={onExit}
             size="sm"
             variant="ghost"
             className="text-white hover:bg-white/15"
@@ -217,22 +254,22 @@ export function AdminView({
                 bg: "#eb92ab4d",
               },
             ].map((s) => (
-              <Card
-                key={s.label}
-                className="p-5 bg-white border-[#ecb4bc]/40 rounded-2xl flex items-center gap-4 shadow-sm"
-              >
-                <div
-                  className="h-12 w-12 rounded-xl flex items-center justify-center text-[#cf4e71]"
-                  style={{ background: s.bg }}
-                >
-                  <s.icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-sm text-[#dc8494]">{s.label}</p>
-                  <p className="text-2xl text-[#cf4e71]">{s.value}</p>
-                </div>
-              </Card>
-            ))}
+               <Card
+                 key={s.label}
+                 className="p-5 bg-white border-[#ecb4bc]/40 rounded-2xl flex items-center gap-4 shadow-sm"
+               >
+                 <div
+                   className="h-12 w-12 rounded-xl flex items-center justify-center text-[#cf4e71]"
+                   style={{ background: s.bg }}
+                 >
+                   <s.icon className="h-6 w-6" />
+                 </div>
+                 <div>
+                   <p className="text-sm text-[#dc8494]">{s.label}</p>
+                   <p className="text-2xl text-[#cf4e71]">{s.value}</p>
+                 </div>
+               </Card>
+             ))}
           </div>
 
           <div className="grid xl:grid-cols-3 gap-6">
@@ -302,13 +339,7 @@ export function AdminView({
                             >
                               <Pencil className="h-4 w-4" />
                             </button>
-                            <button
-                              onClick={() => onDelete(p.id)}
-                              className="h-9 w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors"
-                              aria-label="Excluir"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
+                            <DeleteButton id={p.id} imageUrl={p.image} />
                           </div>
                         </td>
                       </tr>
@@ -352,13 +383,17 @@ export function AdminView({
                 )}
               </div>
 
-              <div className="space-y-4">
+              <form action={editing ? updateAction : createAction} className="space-y-4">
+                {editing && <input type="hidden" name="id" value={editing.id} />}
+                {editing && <input type="hidden" name="existingImage" value={editing.image} />}
+                
                 {/* Drag and drop */}
                 <div>
                   <Label className="text-[#3a2129] text-sm">
                     Foto do produto
                   </Label>
                   <input
+                    name="image"
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
@@ -417,6 +452,7 @@ export function AdminView({
                   </Label>
                   <Input
                     id="name"
+                    name="name"
                     value={form.name}
                     onChange={(e) =>
                       setForm({ ...form, name: e.target.value })
@@ -432,6 +468,7 @@ export function AdminView({
                   </Label>
                   <Textarea
                     id="desc"
+                    name="description"
                     value={form.description}
                     onChange={(e) =>
                       setForm({ ...form, description: e.target.value })
@@ -452,6 +489,7 @@ export function AdminView({
                     </Label>
                     <Input
                       id="price"
+                      name="price"
                       type="number"
                       step="0.01"
                       value={form.price}
@@ -464,6 +502,7 @@ export function AdminView({
                   </div>
                   <div>
                     <Label className="text-[#3a2129] text-sm">Marca *</Label>
+                    <input type="hidden" name="brand" value={form.brand} />
                     <Select
                       value={form.brand}
                       onValueChange={(v) =>
@@ -484,14 +523,14 @@ export function AdminView({
                   </div>
                 </div>
 
-                <Button
-                  onClick={handleSubmit}
-                  className="w-full bg-[#cf4e71] hover:bg-[#b8425f] text-white rounded-full h-11 mt-2 shadow-md shadow-[#cf4e71]/25"
-                >
-                  <Plus className="h-4 w-4 mr-1" />
-                  {editing ? "Salvar alterações" : "Adicionar produto"}
-                </Button>
-              </div>
+                {(createState?.error || updateState?.error) && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {createState?.error || updateState?.error}
+                  </p>
+                )}
+
+                <SubmitButton isEditing={!!editing} />
+              </form>
             </Card>
           </div>
         </div>
