@@ -194,12 +194,6 @@ export function HomeView({ products }: Props) {
                     alt={p.name}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <button
-                    aria-label="Favoritar"
-                    className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/95 backdrop-blur flex items-center justify-center text-[#cf4e71] hover:bg-[#cf4e71] hover:text-white transition-colors shadow"
-                  >
-                    <Heart className="h-4 w-4" />
-                  </button>
                   <Badge className="absolute top-3 left-3 bg-white text-[#cf4e71] border-0 hover:bg-white shadow">
                     {p.brand}
                   </Badge>
@@ -215,7 +209,7 @@ export function HomeView({ products }: Props) {
                     asChild
                     className="bg-[#cf4e71] hover:bg-[#b8425f] text-white mt-auto rounded-full h-11 shadow-md shadow-[#cf4e71]/25"
                   >
-                    <Link href={`/produto/${p.slug}`}>Ver Detalhes</Link>
+                    <Link to={`/produto/${p.slug}`}>Ver Detalhes</Link>
                   </Button>
                 </div>
               </Card>

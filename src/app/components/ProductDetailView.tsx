@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import { ArrowLeft, Truck, Shield, Gift, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -40,10 +41,10 @@ export function ProductDetailView({ product, onBack }: Props) {
             Voltar à vitrine
           </Button>
         ) : (
-          <a href="/" className="inline-flex items-center text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-6 -ml-2 rounded-full px-4 py-2 font-medium transition-colors">
+          <Link to="/" className="inline-flex items-center text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-6 -ml-2 rounded-full px-4 py-2 font-medium transition-colors">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Voltar à vitrine
-          </a>
+          </Link>
         )}
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-14">
