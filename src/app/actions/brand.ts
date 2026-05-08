@@ -36,7 +36,7 @@ export async function fetchBrands() {
   }
 }
 
-export async function createBrand(prevState: any, formData: FormData) {
+export async function createBrand(_prevState: any, formData: FormData) {
   try {
     const name = formData.get("name") as string;
 
@@ -67,7 +67,7 @@ export async function createBrand(prevState: any, formData: FormData) {
   }
 }
 
-export async function updateBrand(prevState: any, formData: FormData) {
+export async function updateBrand(_prevState: any, formData: FormData) {
   try {
     const id = formData.get("id") as string;
     const name = formData.get("name") as string;
@@ -110,7 +110,7 @@ export async function updateBrand(prevState: any, formData: FormData) {
   }
 }
 
-export async function deleteBrand(prevState: any, formData: FormData) {
+export async function deleteBrand(_prevState: any, formData: FormData) {
   try {
     const id = formData.get("id") as string;
 

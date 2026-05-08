@@ -1,6 +1,6 @@
 import { supabase } from "../../lib/supabase";
 
-export async function createProduct(prevState: any, formData: FormData) {
+export async function createProduct(_prevState: any, formData: FormData) {
   try {
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
@@ -19,7 +19,7 @@ export async function createProduct(prevState: any, formData: FormData) {
       const ext = file.name.split('.').pop();
       const fileName = `${productSlug}-${Date.now()}.${ext}`;
 
-      const { data, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('produtos-imagens')
         .upload(fileName, file);
 
@@ -49,7 +49,7 @@ export async function createProduct(prevState: any, formData: FormData) {
   }
 }
 
-export async function updateProduct(prevState: any, formData: FormData) {
+export async function updateProduct(_prevState: any, formData: FormData) {
   try {
     const id = formData.get("id") as string;
     const name = formData.get("name") as string;
@@ -70,7 +70,7 @@ export async function updateProduct(prevState: any, formData: FormData) {
       const ext = file.name.split('.').pop();
       const fileName = `${productSlug}-${Date.now()}.${ext}`;
 
-      const { data, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('produtos-imagens')
         .upload(fileName, file);
 
@@ -107,7 +107,7 @@ export async function updateProduct(prevState: any, formData: FormData) {
   }
 }
 
-export async function deleteProduct(prevState: any, formData: FormData) {
+export async function deleteProduct(_prevState: any, formData: FormData) {
   try {
     const id = formData.get("id") as string;
     const imageUrl = formData.get("imageUrl") as string;

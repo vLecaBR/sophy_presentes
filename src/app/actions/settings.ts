@@ -40,7 +40,7 @@ export async function fetchSettings(): Promise<StoreSettings> {
   }
 }
 
-export async function updateSettings(prevState: any, formData: FormData) {
+export async function updateSettings(_prevState: any, formData: FormData) {
   try {
     const dataToUpdate = {
       whatsapp_number: formData.get("whatsapp_number") as string,

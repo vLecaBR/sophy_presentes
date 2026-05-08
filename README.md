@@ -25,45 +25,6 @@ Este projeto foi construído utilizando as melhores e mais modernas ferramentas 
 - **[Lucide React](https://lucide.dev/):** Ícones modernos e flexíveis.
 - **[Supabase](https://supabase.com/):** Backend-as-a-Service (BaaS) open-source atuando como nosso banco de dados.
 
-## ⚙️ Pré-requisitos
-
-Para rodar este projeto localmente, certifique-se de ter instalado em sua máquina:
-- [Node.js](https://nodejs.org/en/) (versão 18+ recomendada)
-- NPM ou Yarn ou PNPM
-
-## 🔧 Configuração e Variáveis de Ambiente
-
-O projeto requer uma configuração com o Supabase. Crie um arquivo `.env` na raiz do projeto baseado no `.env.example` e adicione as seguintes variáveis:
-
-```env
-VITE_SUPABASE_URL=sua_url_do_supabase
-VITE_SUPABASE_ANON_KEY=sua_chave_anonima_do_supabase
-```
-
-*(Nota: Na raiz do projeto existem arquivos `.sql` que podem ser usados para gerar a estrutura das tabelas no seu painel do Supabase, como `supabase_settings.sql` e `supabase_brands.sql`).*
-
-## 💻 Como Rodar o Projeto Localmente
-
-1. **Clone/Abra o repositório em sua máquina.**
-
-2. **Instale as dependências:**
-   ```bash
-   npm install
-   ```
-
-3. **Inicie o servidor de desenvolvimento:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Acesse no navegador:**  
-   O Vite normalmente iniciará a aplicação em `http://localhost:5173`.
-
-5. **Build para Produção:**  
-   Para compilar os arquivos minimizados para produção, execute:
-   ```bash
-   npm run build
-   ```
 
 ## 📂 Estrutura Principal de Pastas
 
