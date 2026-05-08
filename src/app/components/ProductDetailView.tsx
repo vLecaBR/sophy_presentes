@@ -9,6 +9,7 @@ import { Separator } from "./ui/separator";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { formatBRL, type Product } from "./sophy-data";
 import { WhatsAppIcon } from "./SophyHeader";
+import { useSettings } from "../contexts/SettingsContext";
 
 interface Props {
   product: Product;
@@ -17,13 +18,14 @@ interface Props {
 
 export function ProductDetailView({ product, onBack }: Props) {
   const [currentUrl, setCurrentUrl] = useState("");
+  const settings = useSettings();
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
   }, []);
 
   const whatsappText = `Olá, tenho interesse no produto: ${product.name}. Veja o link: ${currentUrl}`;
-  const whatsappUrl = `https://wa.me/5516988523009?text=${encodeURIComponent(whatsappText)}`;
+  const whatsappUrl = `https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(whatsappText)}`;
 
   return (
     <div className="bg-[#fbe9ed] min-h-screen">
@@ -159,7 +161,7 @@ export function ProductDetailView({ product, onBack }: Props) {
               </span>
             </a>
             <p className="text-center text-xs text-[#dc8494] mt-3">
-              Resposta rápida pelo WhatsApp · +55 16 98852-3009
+              Resposta rápida pelo WhatsApp · +{settings.whatsapp_number}
             </p>
           </div>
         </div>

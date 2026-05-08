@@ -5,6 +5,7 @@ import { HomeView } from "./components/HomeView";
 import { AdminView } from "./components/AdminView";
 import { ProductDetailView } from "./components/ProductDetailView";
 import { LoginView } from "./components/LoginView";
+import { SettingsProvider } from "./contexts/SettingsContext";
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<any>(null);
@@ -66,18 +67,20 @@ export default function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomeView products={products} />} />
-        <Route path="/login" element={<LoginView />} />
-        <Route path="/admin" element={
-          <RequireAuth>
-            <AdminView products={products} onRefresh={fetchProducts} />
-          </RequireAuth>
-        } />
-        <Route path="/produto/:slug" element={<ProductRoute products={products} />} />
-      </Routes>
-    </BrowserRouter>
+    <SettingsProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomeView products={products} />} />
+          <Route path="/login" element={<LoginView />} />
+          <Route path="/admin" element={
+            <RequireAuth>
+              <AdminView products={products} onRefresh={fetchProducts} />
+            </RequireAuth>
+          } />
+          <Route path="/produto/:slug" element={<ProductRoute products={products} />} />
+        </Routes>
+      </BrowserRouter>
+    </SettingsProvider>
   );
 }
 

@@ -1,10 +1,7 @@
 import { Instagram, Lock } from "lucide-react";
 import { Button } from "./ui/button";
 import { SophyLogo } from "./SophyLogo";
-
-const INSTAGRAM_URL = "https://instagram.com/sophy_presentesrp";
-const WHATSAPP_URL =
-  "https://wa.me/5516988523009?text=Olá%20Sophy%20Presentes!";
+import { useSettings } from "../contexts/SettingsContext";
 
 function WhatsAppIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -25,6 +22,10 @@ interface Props {
 }
 
 export function SophyHeader({ onAdminClick, onHomeClick }: Props) {
+  const settings = useSettings();
+  const instagramUrl = `https://instagram.com/${settings.instagram_handle}`;
+  const whatsappUrl = `https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(settings.whatsapp_message)}`;
+
   return (
     <header className="sticky top-0 z-30 w-full bg-white/85 backdrop-blur-md border-b border-[#ecb4bc]/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
@@ -45,13 +46,13 @@ export function SophyHeader({ onAdminClick, onHomeClick }: Props) {
             Vitrine
           </a>
           <a
-            href={INSTAGRAM_URL}
+            href={instagramUrl}
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1.5 hover:text-[#cf4e71] transition-colors"
           >
             <Instagram className="h-4 w-4" />
-            @sophy_presentesrp
+            @{settings.instagram_handle}
           </a>
           <button
             onClick={onAdminClick}
@@ -73,13 +74,13 @@ export function SophyHeader({ onAdminClick, onHomeClick }: Props) {
             <Lock className="h-4 w-4" />
           </Button>
           <a
-            href={WHATSAPP_URL}
+            href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 bg-[#cf4e71] hover:bg-[#b8425f] text-white rounded-full px-4 sm:px-5 h-11 shadow-md shadow-[#cf4e71]/25 transition-colors"
           >
             <WhatsAppIcon className="h-5 w-5" />
-            <span className="hidden sm:inline text-sm">+55 16 98852-3009</span>
+            <span className="hidden sm:inline text-sm">+{settings.whatsapp_number}</span>
             <span className="sm:hidden text-sm">WhatsApp</span>
           </a>
         </div>

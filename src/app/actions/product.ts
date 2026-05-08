@@ -12,12 +12,12 @@ export async function createProduct(prevState: any, formData: FormData) {
         return { success: false, error: "Nome, preço e marca são obrigatórios." };
     }
 
+    const productSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
     let imageUrl = "";
 
     if (file && file.size > 0) {
-      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
       const ext = file.name.split('.').pop();
-      const fileName = `${slug}-${Date.now()}.${ext}`;
+      const fileName = `${productSlug}-${Date.now()}.${ext}`;
 
       const { data, error: uploadError } = await supabase.storage
         .from('produtos-imagens')
@@ -38,6 +38,7 @@ export async function createProduct(prevState: any, formData: FormData) {
       price,
       brand,
       image_url: imageUrl,
+      slug: productSlug,
     });
 
     if (insertError) throw new Error(insertError.message);
@@ -62,12 +63,12 @@ export async function updateProduct(prevState: any, formData: FormData) {
         return { success: false, error: "Nome, preço e marca são obrigatórios." };
     }
 
+    const productSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
     let imageUrl = existingImage;
 
     if (file && file.size > 0) {
-      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
       const ext = file.name.split('.').pop();
-      const fileName = `${slug}-${Date.now()}.${ext}`;
+      const fileName = `${productSlug}-${Date.now()}.${ext}`;
 
       const { data, error: uploadError } = await supabase.storage
         .from('produtos-imagens')
@@ -95,6 +96,7 @@ export async function updateProduct(prevState: any, formData: FormData) {
       price,
       brand,
       image_url: imageUrl,
+      slug: productSlug,
     }).eq('id', id);
 
     if (updateError) throw new Error(updateError.message);

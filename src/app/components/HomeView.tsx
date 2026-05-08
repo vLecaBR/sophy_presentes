@@ -9,10 +9,7 @@ import { formatBRL, type Product } from "./sophy-data";
 import { fetchBrands } from "../actions/brand";
 import { SophyLogo } from "./SophyLogo";
 import { WhatsAppIcon } from "./SophyHeader";
-
-const INSTAGRAM_URL = "https://instagram.com/sophy_presentesrp";
-const WHATSAPP_URL =
-  "https://wa.me/5516988523009?text=Olá%20Sophy%20Presentes!";
+import { useSettings } from "../contexts/SettingsContext";
 
 interface ProductFromDB {
   id: string;
@@ -30,6 +27,10 @@ interface Props {
 export function HomeView({ products }: Props) {
   const [activeBrand, setActiveBrand] = useState<string | "Todos">("Todos");
   const [brands, setBrands] = useState<{id: string, name: string}[]>([]);
+  const settings = useSettings();
+
+  const instagramUrl = `https://instagram.com/${settings.instagram_handle}`;
+  const whatsappUrl = `https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(settings.whatsapp_message)}`;
 
   useEffect(() => {
     fetchBrands().then(setBrands);
@@ -58,7 +59,7 @@ export function HomeView({ products }: Props) {
             <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur rounded-full px-4 py-1.5 border border-white/80 mb-6">
               <MapPin className="h-3.5 w-3.5 text-[#cf4e71]" />
               <span className="text-xs tracking-wide text-[#cf4e71]">
-                Ribeirão Preto · SP
+                {settings.store_address}
               </span>
             </div>
             <h1 className="font-logo text-[#1f1115] tracking-tight leading-[0.95] text-5xl sm:text-6xl lg:text-7xl">
@@ -241,29 +242,29 @@ export function HomeView({ products }: Props) {
             <ul className="space-y-3">
               <li>
                 <a
-                  href={INSTAGRAM_URL}
+                  href={instagramUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 text-white/90 hover:text-white"
                 >
                   <Instagram className="h-4 w-4" />
-                  @sophy_presentesrp
+                  @{settings.instagram_handle}
                 </a>
               </li>
               <li>
                 <a
-                  href={WHATSAPP_URL}
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 text-white/90 hover:text-white"
                 >
                   <WhatsAppIcon className="h-4 w-4" />
-                  +55 16 98852-3009
+                  +{settings.whatsapp_number}
                 </a>
               </li>
               <li className="inline-flex items-center gap-2 text-white/90">
                 <MapPin className="h-4 w-4" />
-                Ribeirão Preto · SP
+                {settings.store_address}
               </li>
             </ul>
           </div>
@@ -272,13 +273,11 @@ export function HomeView({ products }: Props) {
             <h4 className="text-white/90 tracking-[0.2em] uppercase text-xs mb-4">
               Atendimento
             </h4>
-            <p className="text-white/85 leading-relaxed">
-              Segunda a sábado
-              <br />
-              09h às 19h
+            <p className="text-white/85 leading-relaxed whitespace-pre-wrap">
+              {settings.business_hours}
             </p>
             <a
-              href={WHATSAPP_URL}
+              href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
               className="mt-4 inline-flex items-center gap-2 bg-white text-[#cf4e71] rounded-full px-5 h-11 hover:bg-white/90"
