@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useActionState } from "react";
-import { useFormStatus } from "react-dom";
+import { useState, useRef, useEffect } from "react";
 import {
   Plus,
   Pencil,
@@ -39,6 +38,7 @@ import { createProduct, updateProduct, deleteProduct } from "../actions/product"
 
 interface Props {
   products: Product[];
+  onRefresh?: () => void;
 }
 
 const empty = {
@@ -49,8 +49,7 @@ const empty = {
   image: "",
 };
 
-function SubmitButton({ isEditing }: { isEditing: boolean }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ isEditing, pending }: { isEditing: boolean; pending: boolean }) {
   return (
     <Button
       type="submit"
@@ -71,48 +70,64 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
   );
 }
 
-function DeleteButton({ id, imageUrl }: { id: string, imageUrl: string }) {
-  const [state, formAction, pending] = useActionState(deleteProduct, null);
+function DeleteButton({ id, imageUrl, onRefresh }: { id: string, imageUrl: string, onRefresh?: () => void }) {
+  const [pending, setPending] = useState(false);
+  
+  const handleDelete = async () => {
+    setPending(true);
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("imageUrl", imageUrl);
+    await deleteProduct(null, formData);
+    setPending(false);
+    onRefresh?.();
+  };
   
   return (
-    <form action={formAction}>
-      <input type="hidden" name="id" value={id} />
-      <input type="hidden" name="imageUrl" value={imageUrl} />
-      <button
-        type="submit"
-        disabled={pending}
-        className="h-9 w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors disabled:opacity-50"
-        aria-label="Excluir"
-      >
-        {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-      </button>
-    </form>
+    <button
+      type="button"
+      onClick={handleDelete}
+      disabled={pending}
+      className="h-9 w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors disabled:opacity-50"
+      aria-label="Excluir"
+    >
+      {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+    </button>
   );
 }
 
-export function AdminView({ products }: Props) {
+export function AdminView({ products, onRefresh }: Props) {
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState(empty);
   const [search, setSearch] = useState("");
   const [dragOver, setDragOver] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [createState, createAction] = useActionState(createProduct, null);
-  const [updateState, updateAction] = useActionState(updateProduct, null);
 
   const reset = () => {
     setEditing(null);
     setForm(empty);
+    setErrorMsg("");
     if (fileInputRef.current) {
         fileInputRef.current.value = '';
     }
   };
 
-  useEffect(() => {
-    if (createState?.success || updateState?.success) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPending(true);
+    setErrorMsg("");
+    const formData = new FormData(e.currentTarget);
+    const result = editing ? await updateProduct(null, formData) : await createProduct(null, formData);
+    setPending(false);
+    if (result.success) {
       reset();
+      onRefresh?.();
+    } else {
+      setErrorMsg(result.error || "Ocorreu um erro ao salvar.");
     }
-  }, [createState, updateState]);
+  };
 
   const openEdit = (p: Product) => {
     setEditing(p);
@@ -339,7 +354,7 @@ export function AdminView({ products }: Props) {
                             >
                               <Pencil className="h-4 w-4" />
                             </button>
-                            <DeleteButton id={p.id} imageUrl={p.image} />
+                            <DeleteButton id={p.id} imageUrl={p.image} onRefresh={onRefresh} />
                           </div>
                         </td>
                       </tr>
@@ -383,7 +398,7 @@ export function AdminView({ products }: Props) {
                 )}
               </div>
 
-              <form action={editing ? updateAction : createAction} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {editing && <input type="hidden" name="id" value={editing.id} />}
                 {editing && <input type="hidden" name="existingImage" value={editing.image} />}
                 
@@ -523,13 +538,13 @@ export function AdminView({ products }: Props) {
                   </div>
                 </div>
 
-                {(createState?.error || updateState?.error) && (
+                {errorMsg && (
                   <p className="text-red-500 text-sm mt-2">
-                    {createState?.error || updateState?.error}
+                    {errorMsg}
                   </p>
                 )}
 
-                <SubmitButton isEditing={!!editing} />
+                <SubmitButton isEditing={!!editing} pending={pending} />
               </form>
             </Card>
           </div>

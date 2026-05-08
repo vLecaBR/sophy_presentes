@@ -1,7 +1,4 @@
-"use server";
-
 import { createServerClient } from "../../lib/supabase/server";
-import { revalidatePath } from "next/cache";
 
 export async function createProduct(prevState: any, formData: FormData) {
   try {
@@ -47,7 +44,6 @@ export async function createProduct(prevState: any, formData: FormData) {
 
     if (insertError) throw new Error(insertError.message);
 
-    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -107,7 +103,6 @@ export async function updateProduct(prevState: any, formData: FormData) {
 
     if (updateError) throw new Error(updateError.message);
 
-    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -134,7 +129,6 @@ export async function deleteProduct(prevState: any, formData: FormData) {
 
     if (deleteError) throw new Error(deleteError.message);
 
-    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import { Link } from "react-router";
 import { MapPin, Sparkles, Instagram, Truck, Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
