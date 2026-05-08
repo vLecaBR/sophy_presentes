@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { MapPin, Sparkles, Instagram, Truck, Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -8,7 +8,7 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { formatBRL, type Product } from "./sophy-data";
 import { fetchBrands } from "../actions/brand";
 import { SophyLogo } from "./SophyLogo";
-import { WhatsAppIcon } from "./SophyHeader";
+import { SophyHeader, WhatsAppIcon } from "./SophyHeader";
 import { useSettings } from "../contexts/SettingsContext";
 
 interface ProductFromDB {
@@ -25,6 +25,7 @@ interface Props {
 }
 
 export function HomeView({ products }: Props) {
+  const navigate = useNavigate();
   const [activeBrand, setActiveBrand] = useState<string | "Todos">("Todos");
   const [brands, setBrands] = useState<{id: string, name: string}[]>([]);
   const settings = useSettings();
@@ -46,6 +47,7 @@ export function HomeView({ products }: Props) {
 
   return (
     <div className="bg-[#fbe9ed]">
+      <SophyHeader onAdminClick={() => navigate('/admin')} onHomeClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
       {/* HERO */}
       <section className="relative overflow-hidden">
         {/* Background tone */}
