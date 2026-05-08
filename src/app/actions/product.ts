@@ -1,9 +1,7 @@
-import { createServerClient } from "../../lib/supabase/server";
+import { supabase } from "../../lib/supabase";
 
 export async function createProduct(prevState: any, formData: FormData) {
   try {
-    const supabase = createServerClient();
-    
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
     const price = parseFloat(formData.get("price") as string);
@@ -39,7 +37,7 @@ export async function createProduct(prevState: any, formData: FormData) {
       description,
       price,
       brand,
-      image: imageUrl,
+      image_url: imageUrl,
     });
 
     if (insertError) throw new Error(insertError.message);
@@ -52,8 +50,6 @@ export async function createProduct(prevState: any, formData: FormData) {
 
 export async function updateProduct(prevState: any, formData: FormData) {
   try {
-    const supabase = createServerClient();
-    
     const id = formData.get("id") as string;
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
@@ -98,7 +94,7 @@ export async function updateProduct(prevState: any, formData: FormData) {
       description,
       price,
       brand,
-      image: imageUrl,
+      image_url: imageUrl,
     }).eq('id', id);
 
     if (updateError) throw new Error(updateError.message);
@@ -111,8 +107,6 @@ export async function updateProduct(prevState: any, formData: FormData) {
 
 export async function deleteProduct(prevState: any, formData: FormData) {
   try {
-    const supabase = createServerClient();
-    
     const id = formData.get("id") as string;
     const imageUrl = formData.get("imageUrl") as string;
 

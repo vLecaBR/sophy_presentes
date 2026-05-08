@@ -1,21 +1,43 @@
-import { createServerClient } from "../../lib/supabase/server";
+import { supabase } from "../../lib/supabase";
+
+const DEFAULT_BRANDS = ["Natura", "Boticário", "Eudora", "Prata", "Cacau Show"];
 
 export async function fetchBrands() {
   try {
-    const supabase = createServerClient();
     const { data, error } = await supabase.from('brands').select('*').order('name');
     
-    if (error) throw new Error(error.message);
+    if (error) {
+      if (error.code === '42P01') { // relation does not exist
+        console.error("A tabela 'brands' não existe no Supabase. Por favor, execute o SQL para criá-la.");
+        // Retorna as marcas padrão como fallback visual temporário
+        return DEFAULT_BRANDS.map(name => ({ id: name, name, created_at: new Date().toISOString() }));
+      }
+      throw new Error(error.message);
+    }
+
+    // Se a tabela estiver vazia, insere as marcas padrão
+    if (!data || data.length === 0) {
+      console.log("Inserindo marcas padrão...");
+      const brandsToInsert = DEFAULT_BRANDS.map(name => ({ name }));
+      const { error: insertError } = await supabase.from('brands').insert(brandsToInsert);
+      
+      if (!insertError) {
+        // Busca novamente após inserir
+        const { data: newData } = await supabase.from('brands').select('*').order('name');
+        return newData || [];
+      }
+    }
+
     return data || [];
   } catch (error) {
     console.error("Error fetching brands:", error);
-    return [];
+    // Em caso de erro catastrófico, retorna as padrão para não quebrar a UI
+    return DEFAULT_BRANDS.map(name => ({ id: name, name, created_at: new Date().toISOString() }));
   }
 }
 
 export async function createBrand(prevState: any, formData: FormData) {
   try {
-    const supabase = createServerClient();
     const name = formData.get("name") as string;
 
     if (!name || name.trim() === "") {
@@ -47,7 +69,6 @@ export async function createBrand(prevState: any, formData: FormData) {
 
 export async function updateBrand(prevState: any, formData: FormData) {
   try {
-    const supabase = createServerClient();
     const id = formData.get("id") as string;
     const name = formData.get("name") as string;
     const oldName = formData.get("oldName") as string; // Necessário para cascata
@@ -91,7 +112,6 @@ export async function updateBrand(prevState: any, formData: FormData) {
 
 export async function deleteBrand(prevState: any, formData: FormData) {
   try {
-    const supabase = createServerClient();
     const id = formData.get("id") as string;
 
     if (!id) return { success: false, error: "ID é obrigatório." };
