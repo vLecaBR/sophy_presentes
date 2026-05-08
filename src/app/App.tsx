@@ -1,9 +1,40 @@
-import { BrowserRouter, Routes, Route, useParams } from "react-router";
+import { BrowserRouter, Routes, Route, useParams, Navigate } from "react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { HomeView } from "./components/HomeView";
 import { AdminView } from "./components/AdminView";
 import { ProductDetailView } from "./components/ProductDetailView";
+import { LoginView } from "./components/LoginView";
+
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center text-[#cf4e71]">Carregando...</div>;
+  }
+
+  if (!session) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
 
 export default function App() {
   const [products, setProducts] = useState<any[]>([]);
@@ -38,7 +69,12 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomeView products={products} />} />
-        <Route path="/admin" element={<AdminView products={products} onRefresh={fetchProducts} />} />
+        <Route path="/login" element={<LoginView />} />
+        <Route path="/admin" element={
+          <RequireAuth>
+            <AdminView products={products} onRefresh={fetchProducts} />
+          </RequireAuth>
+        } />
         <Route path="/produto/:slug" element={<ProductRoute products={products} />} />
       </Routes>
     </BrowserRouter>

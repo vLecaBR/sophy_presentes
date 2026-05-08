@@ -35,6 +35,8 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { BRANDS, formatBRL, type Brand, type Product } from "./sophy-data";
 import { SophyLogo } from "./SophyLogo";
 import { createProduct, updateProduct, deleteProduct } from "../actions/product";
+import { supabase } from "../../lib/supabase";
+import { useNavigate } from "react-router";
 
 interface Props {
   products: Product[];
@@ -97,6 +99,7 @@ function DeleteButton({ id, imageUrl, onRefresh }: { id: string, imageUrl: strin
 }
 
 export function AdminView({ products, onRefresh }: Props) {
+  const navigate = useNavigate();
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState(empty);
   const [search, setSearch] = useState("");
@@ -166,6 +169,11 @@ export function AdminView({ products, onRefresh }: Props) {
     }
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   const filtered = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase()),
   );
@@ -208,6 +216,7 @@ export function AdminView({ products, onRefresh }: Props) {
         </nav>
         <div className="p-4 border-t border-white/15">
           <button
+            onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/90 hover:bg-white/10"
           >
             <LogOut className="h-4 w-4" />
@@ -224,6 +233,7 @@ export function AdminView({ products, onRefresh }: Props) {
           <Button
             size="sm"
             variant="ghost"
+            onClick={handleLogout}
             className="text-white hover:bg-white/15"
           >
             <LogOut className="h-4 w-4 mr-1" />
