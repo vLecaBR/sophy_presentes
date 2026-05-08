@@ -39,8 +39,8 @@ export function SophyHeader({ onAdminClick, onHomeClick }: Props) {
           className="bg-[#cf4e71] hover:bg-[#b8425f] text-white rounded-full h-11 px-5 sm:px-6 shadow-md shadow-[#cf4e71]/25"
         >
           <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-            <WhatsAppIcon className="h-5 w-5 mr-2" />
-            Chame no WhatsApp
+            <WhatsAppIcon className="h-5 w-5 sm:mr-2" />
+            <span className="hidden sm:inline">Chame no WhatsApp</span>
           </a>
         </Button>
       </div>

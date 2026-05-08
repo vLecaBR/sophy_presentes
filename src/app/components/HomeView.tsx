@@ -64,7 +64,7 @@ export function HomeView({ products }: Props) {
                 {settings.store_address}
               </span>
             </div>
-            <h1 className="font-logo text-[#1f1115] tracking-tight leading-[0.95] text-5xl sm:text-6xl lg:text-7xl">
+            <h1 className="font-logo text-[#1f1115] tracking-tight leading-[0.95] text-4xl sm:text-6xl lg:text-7xl">
               Pronta entrega
               <br />
               <span className="italic text-[#cf4e71]">em Ribeirão Preto</span>
@@ -93,7 +93,7 @@ export function HomeView({ products }: Props) {
           </div>
 
           {/* Image collage */}
-          <div className="lg:col-span-6 relative h-[420px] sm:h-[520px]">
+          <div className="lg:col-span-6 relative h-[320px] sm:h-[520px]">
             <div className="absolute inset-0">
               {/* Big image */}
               <div className="absolute right-0 top-6 w-[68%] h-[78%] rounded-3xl overflow-hidden shadow-2xl shadow-[#cf4e71]/20 ring-4 ring-white">
@@ -155,7 +155,7 @@ export function HomeView({ products }: Props) {
             {filtered.length === 1 ? "produto" : "produtos"}
           </span>
         </div>
-        <div className="flex gap-2.5 overflow-x-auto pb-3 -mx-1 px-1">
+        <div className="flex gap-2.5 overflow-x-auto pb-3 -mx-1 px-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {["Todos", ...brands.map(b => b.name)].map((brand) => {
             const active = activeBrand === brand;
             return (
@@ -201,15 +201,15 @@ export function HomeView({ products }: Props) {
                   </Badge>
                 </div>
                 <div className="p-4 sm:p-5 flex flex-col gap-2.5 flex-1">
-                  <h3 className="line-clamp-2 min-h-[2.75rem] text-[15px] text-[#3a2129]">
+                  <h3 className="line-clamp-2 min-h-[2.5rem] sm:min-h-[2.75rem] text-sm sm:text-[15px] text-[#3a2129]">
                     {p.name}
                   </h3>
-                  <div className="text-[#cf4e71] text-xl tracking-tight">
+                  <div className="text-[#cf4e71] text-lg sm:text-xl tracking-tight">
                     {formatBRL(p.price)}
                   </div>
                   <Button
                     asChild
-                    className="bg-[#cf4e71] hover:bg-[#b8425f] text-white mt-auto rounded-full h-11 shadow-md shadow-[#cf4e71]/25"
+                    className="bg-[#cf4e71] hover:bg-[#b8425f] text-white mt-auto rounded-full h-11 min-h-[44px] shadow-md shadow-[#cf4e71]/25"
                   >
                     <Link to={`/produto/${p.slug}`}>Ver Detalhes</Link>
                   </Button>
