@@ -15,7 +15,7 @@ export function DashboardView({ products }: Props) {
   return (
     <div className="space-y-8">
       {/* Stats */}
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[
           {
             icon: Package,
@@ -58,19 +58,19 @@ export function DashboardView({ products }: Props) {
         <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 shadow-sm">
           <h2 className="text-lg text-[#1f1115] mb-2">Lista Rápida</h2>
           <p className="text-sm text-[#dc8494]">Últimos produtos adicionados</p>
-          <div className="mt-4 space-y-4">
+          <div className="mt-4 space-y-4 w-full">
             {products.slice(0, 5).map((p) => (
               <div key={p.id} className="flex items-center justify-between border-b border-[#ecb4bc]/30 pb-4 last:border-0 last:pb-0">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg overflow-hidden bg-[#fbe9ed]">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-[#fbe9ed]">
                     <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
                   </div>
-                  <div>
-                    <p className="text-sm text-[#3a2129]">{p.name}</p>
-                    <p className="text-xs text-[#dc8494]">{p.brand}</p>
+                  <div className="min-w-0">
+                    <p className="text-sm text-[#3a2129] truncate">{p.name}</p>
+                    <p className="text-xs text-[#dc8494] truncate">{p.brand}</p>
                   </div>
                 </div>
-                <div className="text-sm font-medium text-[#cf4e71]">
+                <div className="text-sm font-medium text-[#cf4e71] shrink-0 ml-4">
                   {formatBRL(p.price)}
                 </div>
               </div>

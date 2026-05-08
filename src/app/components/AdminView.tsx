@@ -18,7 +18,7 @@ import { DashboardView } from "./admin/DashboardView";
 import { ProductsView } from "./admin/ProductsView";
 import { BrandsView } from "./admin/BrandsView";
 import { SettingsView } from "./admin/SettingsView";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "./ui/sheet";
 
 interface Props {
   products: Product[];
@@ -117,6 +117,10 @@ export function AdminView({ products, onRefresh }: Props) {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0 bg-[#dc8494] border-r-0 flex flex-col text-white">
+                <SheetTitle className="sr-only">Menu de Navegação</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Navegue pelas páginas do painel administrativo.
+                </SheetDescription>
                 <NavContent />
               </SheetContent>
             </Sheet>

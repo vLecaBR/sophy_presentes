@@ -185,14 +185,14 @@ export function ProductsView({ products, onRefresh }: Props) {
         </div>
 
         <div className="overflow-x-auto max-h-[560px]">
-          <table className="w-full">
+          <table className="w-full text-sm sm:text-base">
             <thead className="bg-[#fbe9ed]/60 sticky top-0 z-10">
               <tr className="text-left text-xs tracking-wider uppercase text-[#cf4e71]">
-                <th className="p-4">Imagem</th>
-                <th className="p-4">Nome</th>
-                <th className="p-4">Preço</th>
-                <th className="p-4 hidden md:table-cell">Categoria</th>
-                <th className="p-4 text-right">Ações</th>
+                <th className="p-1 sm:p-4">Imagem</th>
+                <th className="p-1 sm:p-4">Nome</th>
+                <th className="p-1 sm:p-4">Preço</th>
+                <th className="p-1 sm:p-4 hidden md:table-cell">Categoria</th>
+                <th className="p-1 sm:p-4 text-right">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -201,8 +201,8 @@ export function ProductsView({ products, onRefresh }: Props) {
                   key={p.id}
                   className="border-t border-[#ecb4bc]/30 hover:bg-[#fbe9ed]/40 transition-colors"
                 >
-                  <td className="p-3">
-                    <div className="h-12 w-12 rounded-xl overflow-hidden bg-[#fbe9ed] ring-1 ring-[#ecb4bc]/40">
+                  <td className="p-1 sm:p-3">
+                    <div className="h-8 w-8 sm:h-12 sm:w-12 rounded-xl overflow-hidden bg-[#fbe9ed] ring-1 ring-[#ecb4bc]/40 shrink-0">
                       <ImageWithFallback
                         src={p.image}
                         alt={p.name}
@@ -210,32 +210,34 @@ export function ProductsView({ products, onRefresh }: Props) {
                       />
                     </div>
                   </td>
-                  <td className="p-3 max-w-xs">
-                    <div className="truncate text-[#3a2129]">
+                  <td className="p-1 sm:p-3 max-w-[100px] sm:max-w-xs">
+                    <div className="truncate text-[#3a2129] font-medium sm:font-normal text-xs sm:text-base">
                       {p.name}
                     </div>
-                    <div className="text-xs text-[#dc8494] md:hidden">
+                    <div className="text-[10px] sm:text-xs text-[#dc8494] md:hidden truncate">
                       {p.brand}
                     </div>
                   </td>
-                  <td className="p-3 text-[#cf4e71] whitespace-nowrap">
+                  <td className="p-1 sm:p-3 text-[#cf4e71] whitespace-nowrap text-xs sm:text-base">
                     {formatBRL(p.price)}
                   </td>
-                  <td className="p-3 hidden md:table-cell">
+                  <td className="p-1 sm:p-3 hidden md:table-cell">
                     <Badge className="bg-[#ecb4bc]/50 text-[#cf4e71] border-0 hover:bg-[#ecb4bc]/50 rounded-full">
                       {p.brand}
                     </Badge>
                   </td>
-                  <td className="p-3">
-                    <div className="flex justify-end gap-1.5">
+                  <td className="p-1 sm:p-3">
+                    <div className="flex justify-end gap-1 sm:gap-1.5">
                       <button
                         onClick={() => openEdit(p)}
-                        className="h-9 w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors"
+                        className="h-7 w-7 sm:h-9 sm:w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors shrink-0"
                         aria-label="Editar"
                       >
-                        <Pencil className="h-4 w-4" />
+                        <Pencil className="h-3 w-3 sm:h-4 sm:w-4" />
                       </button>
-                      <DeleteButton id={p.id} imageUrl={p.image} onRefresh={onRefresh} />
+                      <div className="shrink-0 [&>button]:h-7 [&>button]:w-7 sm:[&>button]:h-9 sm:[&>button]:w-9 [&>button>svg]:h-3 [&>button>svg]:w-3 sm:[&>button>svg]:h-4 sm:[&>button>svg]:w-4">
+                        <DeleteButton id={p.id} imageUrl={p.image} onRefresh={onRefresh} />
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -425,7 +427,9 @@ export function ProductsView({ products, onRefresh }: Props) {
             </p>
           )}
 
-          <SubmitButton isEditing={!!editing} pending={pending} />
+          <div className="pt-4 mt-4 border-t border-[#ecb4bc]/20">
+            <SubmitButton isEditing={!!editing} pending={pending} />
+          </div>
         </form>
       </Card>
     </div>

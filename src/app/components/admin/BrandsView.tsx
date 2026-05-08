@@ -100,11 +100,11 @@ export function BrandsView() {
         </div>
 
         <div className="overflow-x-auto max-h-[560px]">
-          <table className="w-full">
+          <table className="w-full text-sm sm:text-base">
             <thead className="bg-[#fbe9ed]/60 sticky top-0">
               <tr className="text-left text-xs tracking-wider uppercase text-[#cf4e71]">
-                <th className="p-4">Nome da Marca</th>
-                <th className="p-4 text-right">Ações</th>
+                <th className="p-2 sm:p-4">Nome da Marca</th>
+                <th className="p-2 sm:p-4 text-right">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -126,29 +126,31 @@ export function BrandsView() {
                     key={b.id}
                     className="border-t border-[#ecb4bc]/30 hover:bg-[#fbe9ed]/40 transition-colors"
                   >
-                    <td className="p-4 text-[#3a2129] font-medium">
-                      {b.name}
+                    <td className="p-2 sm:p-4 text-[#3a2129] font-medium text-sm sm:text-base">
+                      <div className="truncate max-w-[120px] sm:max-w-xs">
+                        {b.name}
+                      </div>
                     </td>
-                    <td className="p-4">
-                      <div className="flex justify-end gap-1.5">
+                    <td className="p-2 sm:p-4">
+                      <div className="flex justify-end gap-1 sm:gap-1.5">
                         <button
                           onClick={() => {
                             setEditing(b);
                             setFormName(b.name);
                             setErrorMsg("");
                           }}
-                          className="h-9 w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors"
+                          className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors shrink-0"
                           aria-label="Editar"
                         >
-                          <Pencil className="h-4 w-4" />
+                          <Pencil className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(b.id)}
                           disabled={pending}
-                          className="h-9 w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors disabled:opacity-50"
+                          className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg flex items-center justify-center text-[#cf4e71] bg-[#fbe9ed]/50 hover:bg-[#cf4e71] hover:text-white transition-colors disabled:opacity-50 shrink-0"
                           aria-label="Excluir"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
                       </div>
                     </td>
@@ -205,22 +207,24 @@ export function BrandsView() {
             </p>
           )}
 
-          <Button
-            type="submit"
-            disabled={pending}
-            className="w-full bg-[#cf4e71] hover:bg-[#b8425f] text-white rounded-full h-11 mt-2 shadow-md shadow-[#cf4e71]/25 disabled:opacity-70"
-          >
-            {pending ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Plus className="h-4 w-4 mr-1" />
-            )}
-            {pending
-              ? "Salvando..."
-              : editing
-              ? "Salvar alterações"
-              : "Adicionar marca"}
-          </Button>
+          <div className="pt-4 mt-4 border-t border-[#ecb4bc]/20">
+            <Button
+              type="submit"
+              disabled={pending}
+              className="w-full bg-[#cf4e71] hover:bg-[#b8425f] text-white rounded-full h-11 mt-2 shadow-md shadow-[#cf4e71]/25 disabled:opacity-70"
+            >
+              {pending ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Plus className="h-4 w-4 mr-1" />
+              )}
+              {pending
+                ? "Salvando..."
+                : editing
+                ? "Salvar alterações"
+                : "Adicionar marca"}
+            </Button>
+          </div>
         </form>
       </Card>
     </div>
