@@ -13,7 +13,7 @@ export function DashboardView({ products }: Props) {
   const brandsCount = new Set(products.map((p) => p.brand)).size;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-full">
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[
@@ -54,13 +54,13 @@ export function DashboardView({ products }: Props) {
         ))}
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 w-full">
         <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 shadow-sm min-w-0">
           <h2 className="text-lg text-[#1f1115] mb-2">Lista Rápida</h2>
           <p className="text-sm text-[#dc8494]">Últimos produtos adicionados</p>
           <div className="mt-4 space-y-4 w-full">
             {products.slice(0, 5).map((p) => (
-              <div key={p.id} className="flex items-center justify-between border-b border-[#ecb4bc]/30 pb-4 last:border-0 last:pb-0">
+              <div key={p.id} className="flex items-center justify-between border-b border-[#ecb4bc]/30 pb-4 last:border-0 last:pb-0 w-full min-w-0">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-[#fbe9ed]">
                     <img src={p.image} alt={p.name} className="h-full w-full object-cover" />

@@ -55,7 +55,7 @@ export function SettingsView() {
   }
 
   return (
-    <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 md:p-8 shadow-sm max-w-2xl mx-auto min-w-0">
+    <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 md:p-8 shadow-sm max-w-2xl mx-auto min-w-0 w-full overflow-hidden">
       <div className="mb-6 border-b border-[#ecb4bc]/40 pb-4">
         <h2 className="text-xl font-medium text-[#1f1115]">Configurações da Loja</h2>
         <p className="text-sm text-[#dc8494] mt-1">
@@ -66,7 +66,7 @@ export function SettingsView() {
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-4">
           <div>
-            <Label htmlFor="whatsapp_number" className="text-[#3a2129] text-sm">
+            <Label htmlFor="whatsapp_number" className="text-[#3a2129] text-sm whitespace-normal break-words block">
               WhatsApp (Apenas números, com DDI e DDD)
             </Label>
             <Input
@@ -79,7 +79,7 @@ export function SettingsView() {
           </div>
 
           <div>
-            <Label htmlFor="whatsapp_message" className="text-[#3a2129] text-sm">
+            <Label htmlFor="whatsapp_message" className="text-[#3a2129] text-sm whitespace-normal break-words block">
               Mensagem Padrão do WhatsApp
             </Label>
             <Input
@@ -92,7 +92,7 @@ export function SettingsView() {
           </div>
 
           <div>
-            <Label htmlFor="instagram_handle" className="text-[#3a2129] text-sm">
+            <Label htmlFor="instagram_handle" className="text-[#3a2129] text-sm whitespace-normal break-words block">
               Instagram Handle (sem o @)
             </Label>
             <Input
@@ -105,7 +105,7 @@ export function SettingsView() {
           </div>
 
           <div>
-            <Label htmlFor="store_address" className="text-[#3a2129] text-sm">
+            <Label htmlFor="store_address" className="text-[#3a2129] text-sm whitespace-normal break-words block">
               Endereço da Loja
             </Label>
             <Input
@@ -118,7 +118,7 @@ export function SettingsView() {
           </div>
 
           <div>
-            <Label htmlFor="business_hours" className="text-[#3a2129] text-sm">
+            <Label htmlFor="business_hours" className="text-[#3a2129] text-sm whitespace-normal break-words block">
               Horário de Funcionamento
             </Label>
             <Input

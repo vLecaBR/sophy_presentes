@@ -83,12 +83,12 @@ export function BrandsView() {
   );
 
   return (
-    <div className="grid xl:grid-cols-3 gap-6">
+    <div className="grid xl:grid-cols-3 gap-6 w-full">
       {/* List */}
       <Card className="xl:col-span-2 bg-white border-[#ecb4bc]/40 p-0 rounded-2xl overflow-hidden shadow-sm min-w-0">
         <div className="p-5 border-b border-[#ecb4bc]/40 flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
           <h2 className="text-[#1f1115]">Marcas cadastradas</h2>
-          <div className="relative sm:w-72">
+          <div className="relative w-full sm:w-72">
             <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#dc8494]" />
             <Input
               value={search}
@@ -99,7 +99,7 @@ export function BrandsView() {
           </div>
         </div>
 
-        <div className="overflow-x-auto max-h-[560px]">
+        <div className="overflow-x-auto max-h-[560px] w-full">
           <table className="w-full text-sm sm:text-base">
             <thead className="bg-[#fbe9ed]/60 sticky top-0">
               <tr className="text-left text-xs tracking-wider uppercase text-[#cf4e71]">

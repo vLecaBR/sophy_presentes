@@ -99,17 +99,17 @@ export function AdminView({ products, onRefresh }: Props) {
   );
 
   return (
-    <div className="bg-[#fbe9ed]/50 min-h-screen flex w-full overflow-x-hidden">
+    <div className="bg-[#fbe9ed]/50 min-h-screen lg:flex">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 bg-[#dc8494] text-white sticky top-0 h-screen">
+      <aside className="hidden lg:flex flex-col w-64 bg-[#dc8494] text-white sticky top-0 h-screen shrink-0">
         <NavContent />
       </aside>
 
       {/* Main */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 flex flex-col">
         {/* Mobile top bar */}
-        <div className="lg:hidden bg-[#dc8494] text-white px-4 h-16 flex items-center justify-between sticky top-0 z-20 shadow-sm">
-          <div className="flex items-center gap-3">
+        <div className="lg:hidden bg-[#dc8494] text-white px-4 h-16 flex items-center justify-between sticky top-0 z-20 shadow-sm w-full min-w-0">
+          <div className="flex items-center gap-3 min-w-0">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="text-white hover:bg-white/15">
@@ -138,7 +138,7 @@ export function AdminView({ products, onRefresh }: Props) {
           </Button>
         </div>
 
-        <div className="p-4 sm:p-6 lg:p-10 space-y-8 max-w-[1400px] mx-auto">
+        <div className="p-4 sm:p-6 lg:p-10 space-y-8 w-full max-w-[1400px] mx-auto">
           {/* Header */}
           <div className="flex items-end justify-between gap-4 flex-wrap">
             <div>
