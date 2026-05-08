@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Plus,
   Pencil,
@@ -24,8 +24,9 @@ import {
   SelectValue,
 } from "../ui/select";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { BRANDS, formatBRL, type Brand, type Product } from "../sophy-data";
+import { formatBRL, type Product } from "../sophy-data";
 import { createProduct, updateProduct, deleteProduct } from "../../actions/product";
+import { fetchBrands } from "../../actions/brand";
 
 interface Props {
   products: Product[];
@@ -36,7 +37,7 @@ const empty = {
   name: "",
   description: "",
   price: "",
-  brand: "" as Brand | "",
+  brand: "",
   image: "",
 };
 
@@ -95,6 +96,11 @@ export function ProductsView({ products, onRefresh }: Props) {
   const [pending, setPending] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [brandsList, setBrandsList] = useState<{id: string, name: string}[]>([]);
+
+  useEffect(() => {
+    fetchBrands().then(setBrandsList);
+  }, []);
 
   const reset = () => {
     setEditing(null);
@@ -126,7 +132,7 @@ export function ProductsView({ products, onRefresh }: Props) {
       name: p.name,
       description: p.description || "",
       price: String(p.price),
-      brand: p.brand as Brand,
+      brand: p.brand as string,
       image: p.image,
     });
   };
@@ -180,7 +186,7 @@ export function ProductsView({ products, onRefresh }: Props) {
 
         <div className="overflow-x-auto max-h-[560px]">
           <table className="w-full">
-            <thead className="bg-[#fbe9ed]/60 sticky top-0">
+            <thead className="bg-[#fbe9ed]/60 sticky top-0 z-10">
               <tr className="text-left text-xs tracking-wider uppercase text-[#cf4e71]">
                 <th className="p-4">Imagem</th>
                 <th className="p-4">Nome</th>
@@ -396,16 +402,16 @@ export function ProductsView({ products, onRefresh }: Props) {
               <Select
                 value={form.brand}
                 onValueChange={(v) =>
-                  setForm({ ...form, brand: v as Brand })
+                  setForm({ ...form, brand: v as string })
                 }
               >
                 <SelectTrigger className="mt-1.5 border-[#ecb4bc] focus:ring-[#cf4e71]">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent>
-                  {BRANDS.map((b) => (
-                    <SelectItem key={b} value={b}>
-                      {b}
+                  {brandsList.map((b) => (
+                    <SelectItem key={b.id} value={b.name}>
+                      {b.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -1,11 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router";
 import { MapPin, Sparkles, Instagram, Truck, Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { BRANDS, formatBRL, type Brand, type Product } from "./sophy-data";
+import { formatBRL, type Product } from "./sophy-data";
+import { fetchBrands } from "../actions/brand";
 import { SophyLogo } from "./SophyLogo";
 import { WhatsAppIcon } from "./SophyHeader";
 
@@ -28,6 +29,11 @@ interface Props {
 
 export function HomeView({ products }: Props) {
   const [activeBrand, setActiveBrand] = useState<string | "Todos">("Todos");
+  const [brands, setBrands] = useState<{id: string, name: string}[]>([]);
+
+  useEffect(() => {
+    fetchBrands().then(setBrands);
+  }, []);
 
   const filtered = useMemo(
     () =>
@@ -147,7 +153,7 @@ export function HomeView({ products }: Props) {
           </span>
         </div>
         <div className="flex gap-2.5 overflow-x-auto pb-3 -mx-1 px-1">
-          {(["Todos", ...BRANDS] as const).map((brand) => {
+          {["Todos", ...brands.map(b => b.name)].map((brand) => {
             const active = activeBrand === brand;
             return (
               <button
