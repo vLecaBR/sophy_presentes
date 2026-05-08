@@ -6,7 +6,6 @@ import { AdminView } from "./components/AdminView";
 import { ProductDetailView } from "./components/ProductDetailView";
 import { LoginView } from "./components/LoginView";
 import { SettingsProvider } from "./contexts/SettingsContext";
-import { Analytics } from "@vercel/analytics/react"
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<any>(null);
@@ -81,7 +80,6 @@ export default function App() {
           <Route path="/produto/:slug" element={<ProductRoute products={products} />} />
         </Routes>
       </BrowserRouter>
-      <Analytics />
     </SettingsProvider>
   );
 }
