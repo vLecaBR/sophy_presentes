@@ -99,7 +99,7 @@ export function AdminView({ products, onRefresh }: Props) {
   );
 
   return (
-    <div className="bg-[#fbe9ed]/50 min-h-screen flex">
+    <div className="bg-[#fbe9ed]/50 min-h-screen flex w-full overflow-x-hidden">
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col w-64 bg-[#dc8494] text-white sticky top-0 h-screen">
         <NavContent />
@@ -124,7 +124,7 @@ export function AdminView({ products, onRefresh }: Props) {
                 <NavContent />
               </SheetContent>
             </Sheet>
-            <span className="font-medium text-lg">{activeTab}</span>
+            <span className="font-medium text-lg truncate">{activeTab}</span>
           </div>
           
           <Button

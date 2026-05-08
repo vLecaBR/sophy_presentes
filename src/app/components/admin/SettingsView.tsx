@@ -55,7 +55,7 @@ export function SettingsView() {
   }
 
   return (
-    <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 md:p-8 shadow-sm max-w-2xl mx-auto">
+    <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 md:p-8 shadow-sm max-w-2xl mx-auto min-w-0">
       <div className="mb-6 border-b border-[#ecb4bc]/40 pb-4">
         <h2 className="text-xl font-medium text-[#1f1115]">Configurações da Loja</h2>
         <p className="text-sm text-[#dc8494] mt-1">

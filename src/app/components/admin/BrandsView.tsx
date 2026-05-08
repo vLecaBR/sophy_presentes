@@ -85,7 +85,7 @@ export function BrandsView() {
   return (
     <div className="grid xl:grid-cols-3 gap-6">
       {/* List */}
-      <Card className="xl:col-span-2 bg-white border-[#ecb4bc]/40 p-0 rounded-2xl overflow-hidden shadow-sm">
+      <Card className="xl:col-span-2 bg-white border-[#ecb4bc]/40 p-0 rounded-2xl overflow-hidden shadow-sm min-w-0">
         <div className="p-5 border-b border-[#ecb4bc]/40 flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
           <h2 className="text-[#1f1115]">Marcas cadastradas</h2>
           <div className="relative sm:w-72">
@@ -163,7 +163,7 @@ export function BrandsView() {
       </Card>
 
       {/* Form */}
-      <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-5 shadow-sm h-fit xl:sticky xl:top-6">
+      <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-5 shadow-sm h-fit xl:sticky xl:top-6 min-w-0">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-[#1f1115]">

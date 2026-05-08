@@ -38,7 +38,7 @@ export function DashboardView({ products }: Props) {
         ].map((s) => (
           <Card
             key={s.label}
-            className="p-5 bg-white border-[#ecb4bc]/40 rounded-2xl flex items-center gap-4 shadow-sm"
+            className="p-5 bg-white border-[#ecb4bc]/40 rounded-2xl flex items-center gap-4 shadow-sm min-w-0"
           >
             <div
               className="h-12 w-12 rounded-xl flex items-center justify-center text-[#cf4e71]"
@@ -55,7 +55,7 @@ export function DashboardView({ products }: Props) {
       </div>
 
       <div className="grid gap-6">
-        <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 shadow-sm">
+        <Card className="bg-white border-[#ecb4bc]/40 rounded-2xl p-6 shadow-sm min-w-0">
           <h2 className="text-lg text-[#1f1115] mb-2">Lista Rápida</h2>
           <p className="text-sm text-[#dc8494]">Últimos produtos adicionados</p>
           <div className="mt-4 space-y-4 w-full">
