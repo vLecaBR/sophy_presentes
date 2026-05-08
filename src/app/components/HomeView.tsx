@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { MapPin, Sparkles, Instagram, Truck, Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -12,13 +13,21 @@ const INSTAGRAM_URL = "https://instagram.com/sophy_presentesrp";
 const WHATSAPP_URL =
   "https://wa.me/5516988523009?text=Olá%20Sophy%20Presentes!";
 
-interface Props {
-  products: Product[];
-  onSelectProduct: (p: Product) => void;
+interface ProductFromDB {
+  id: string;
+  name: string;
+  price: number;
+  brand: string;
+  image_url: string;
+  slug: string;
 }
 
-export function HomeView({ products, onSelectProduct }: Props) {
-  const [activeBrand, setActiveBrand] = useState<Brand | "Todos">("Todos");
+interface Props {
+  products: ProductFromDB[];
+}
+
+export function HomeView({ products }: Props) {
+  const [activeBrand, setActiveBrand] = useState<string | "Todos">("Todos");
 
   const filtered = useMemo(
     () =>
@@ -143,7 +152,7 @@ export function HomeView({ products, onSelectProduct }: Props) {
             return (
               <button
                 key={brand}
-                onClick={() => setActiveBrand(brand as Brand | "Todos")}
+                onClick={() => setActiveBrand(brand as string | "Todos")}
                 className={`shrink-0 rounded-full px-5 py-2.5 border transition-all ${
                   active
                     ? "bg-[#cf4e71] text-white border-[#cf4e71] shadow-md shadow-[#cf4e71]/30"
@@ -174,7 +183,7 @@ export function HomeView({ products, onSelectProduct }: Props) {
               >
                 <div className="relative aspect-square overflow-hidden bg-[#fbe9ed]">
                   <ImageWithFallback
-                    src={p.image}
+                    src={p.image_url}
                     alt={p.name}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -196,10 +205,10 @@ export function HomeView({ products, onSelectProduct }: Props) {
                     {formatBRL(p.price)}
                   </div>
                   <Button
-                    onClick={() => onSelectProduct(p)}
+                    asChild
                     className="bg-[#cf4e71] hover:bg-[#b8425f] text-white mt-auto rounded-full h-11 shadow-md shadow-[#cf4e71]/25"
                   >
-                    Ver Detalhes
+                    <Link href={`/produto/${p.slug}`}>Ver Detalhes</Link>
                   </Button>
                 </div>
               </Card>
