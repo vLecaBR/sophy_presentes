@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Truck, Shield, Gift, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -9,7 +9,7 @@ import { Card } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { formatBRL, type Product } from "./sophy-data";
-import { WhatsAppIcon } from "./SophyHeader";
+import { SophyHeader, WhatsAppIcon } from "./SophyHeader";
 import { useSettings } from "../contexts/SettingsContext";
 
 interface Props {
@@ -20,6 +20,7 @@ interface Props {
 export function ProductDetailView({ product, onBack }: Props) {
   const [currentUrl, setCurrentUrl] = useState("");
   const settings = useSettings();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
@@ -30,6 +31,7 @@ export function ProductDetailView({ product, onBack }: Props) {
 
   return (
     <div className="bg-[#fbe9ed] min-h-screen">
+      <SophyHeader onAdminClick={() => navigate('/admin')} onHomeClick={() => navigate('/')} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {onBack ? (
           <Button
