@@ -32,29 +32,29 @@ export function ProductDetailView({ product, onBack }: Props) {
   return (
     <div className="bg-[#fbe9ed] min-h-screen">
       <SophyHeader onAdminClick={() => navigate('/admin')} onHomeClick={() => navigate('/')} />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8">
         {onBack ? (
           <Button
             variant="ghost"
             onClick={onBack}
-            className="text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-6 -ml-2 rounded-full"
+            className="text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-4 sm:mb-6 -ml-2 rounded-full px-4 py-3 min-h-[48px] inline-flex items-center"
           >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Voltar à vitrine
+            <ArrowLeft className="h-5 w-5 sm:h-4 sm:w-4 mr-2 sm:mr-1" />
+            <span className="font-medium">Voltar à vitrine</span>
           </Button>
         ) : (
-          <Link to="/" className="inline-flex items-center text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-6 -ml-2 rounded-full px-4 py-2 font-medium transition-colors">
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Voltar à vitrine
+          <Link to="/" className="inline-flex items-center text-[#cf4e71] hover:bg-[#ecb4bc]/30 hover:text-[#cf4e71] mb-4 sm:mb-6 -ml-2 rounded-full px-4 py-3 min-h-[48px] font-medium transition-colors">
+            <ArrowLeft className="h-5 w-5 sm:h-4 sm:w-4 mr-2 sm:mr-1" />
+            <span>Voltar à vitrine</span>
           </Link>
         )}
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-14">
           {/* Image side */}
           <div className="lg:col-span-7">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-[#ecb4bc]/60 to-[#eb92ab]/40 rounded-[2.5rem] blur-2xl" />
-              <Card className="relative overflow-hidden bg-white border-[#ecb4bc]/40 p-0 rounded-[2rem] shadow-xl shadow-[#cf4e71]/15">
+            <div className="relative -mx-4 sm:mx-0">
+              <div className="absolute -inset-4 bg-gradient-to-br from-[#ecb4bc]/60 to-[#eb92ab]/40 rounded-none sm:rounded-[2.5rem] blur-2xl hidden sm:block" />
+              <Card className="relative overflow-hidden bg-white border-0 sm:border-[#ecb4bc]/40 p-0 rounded-none sm:rounded-[2rem] shadow-none sm:shadow-xl sm:shadow-[#cf4e71]/15">
                 <div className="aspect-square bg-[#fbe9ed]">
                   <ImageWithFallback
                     src={product.image}
@@ -90,12 +90,12 @@ export function ProductDetailView({ product, onBack }: Props) {
             <Badge className="self-start bg-[#ecb4bc]/50 text-[#cf4e71] border-0 hover:bg-[#ecb4bc]/50 mb-4 rounded-full px-3 py-1">
               {product.brand}
             </Badge>
-            <h1 className="font-logo text-4xl sm:text-5xl text-[#1f1115] mb-4 tracking-tight leading-tight">
+            <h1 className="font-logo text-3xl sm:text-4xl md:text-5xl text-[#1f1115] mb-3 sm:mb-4 tracking-tight leading-tight">
               {product.name}
             </h1>
 
             <div className="flex items-baseline gap-3 mb-1">
-              <span className="text-5xl text-[#cf4e71] tracking-tight">
+              <span className="text-4xl sm:text-5xl text-[#cf4e71] tracking-tight font-medium">
                 {formatBRL(product.price)}
               </span>
             </div>
@@ -112,8 +112,8 @@ export function ProductDetailView({ product, onBack }: Props) {
               </p>
             </div>
 
-            <Card className="bg-white border-[#ecb4bc]/40 p-5 mb-6 rounded-2xl">
-              <div className="grid grid-cols-3 gap-3 text-center">
+            <Card className="bg-white border-[#ecb4bc]/40 p-4 sm:p-5 mb-6 rounded-2xl">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
                 {[
                   { icon: Truck, label: "Entrega hoje" },
                   { icon: Gift, label: "Embalagem grátis" },
@@ -121,12 +121,12 @@ export function ProductDetailView({ product, onBack }: Props) {
                 ].map((it, i) => (
                   <div
                     key={i}
-                    className="flex flex-col items-center gap-1.5"
+                    className="flex flex-col items-center gap-1 sm:gap-1.5"
                   >
-                    <div className="h-10 w-10 rounded-full bg-[#fbe9ed] flex items-center justify-center text-[#cf4e71]">
-                      <it.icon className="h-5 w-5" />
+                    <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-[#fbe9ed] flex items-center justify-center text-[#cf4e71]">
+                      <it.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <span className="text-xs text-[#3a2129]">{it.label}</span>
+                    <span className="text-[10px] sm:text-xs text-[#3a2129] leading-tight">{it.label}</span>
                   </div>
                 ))}
               </div>
@@ -146,26 +146,28 @@ export function ProductDetailView({ product, onBack }: Props) {
             </Card>
 
             {/* MEGA CTA */}
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group w-full relative inline-flex items-center justify-center gap-3 h-16 rounded-2xl text-white text-lg shadow-2xl shadow-[#cf4e71]/40 hover:shadow-[#cf4e71]/60 hover:-translate-y-0.5 transition-all"
-              style={{
-                background:
-                  "linear-gradient(135deg, #eb92ab 0%, #cf4e71 50%, #b8425f 100%)",
-              }}
-            >
-              <span className="absolute inset-0 rounded-2xl ring-1 ring-white/20" />
-              <WhatsAppIcon className="h-6 w-6" />
-              <span>Tenho interesse</span>
-              <span className="ml-1 group-hover:translate-x-1 transition-transform">
-                →
-              </span>
-            </a>
-            <p className="text-center text-xs text-[#dc8494] mt-3">
-              Resposta rápida pelo WhatsApp · +{settings.whatsapp_number}
-            </p>
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-[#ecb4bc]/30 z-50 sm:relative sm:p-0 sm:bg-transparent sm:backdrop-blur-none sm:border-0 sm:z-auto">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-full relative inline-flex items-center justify-center gap-3 h-14 sm:h-16 rounded-xl sm:rounded-2xl text-white text-base sm:text-lg shadow-xl shadow-[#cf4e71]/30 sm:shadow-2xl sm:shadow-[#cf4e71]/40 hover:shadow-[#cf4e71]/60 hover:-translate-y-0.5 transition-all font-medium"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #eb92ab 0%, #cf4e71 50%, #b8425f 100%)",
+                }}
+              >
+                <span className="absolute inset-0 rounded-xl sm:rounded-2xl ring-1 ring-white/20" />
+                <WhatsAppIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                <span>Tenho interesse</span>
+                <span className="ml-1 group-hover:translate-x-1 transition-transform">
+                  →
+                </span>
+              </a>
+              <p className="hidden sm:block text-center text-xs text-[#dc8494] mt-3">
+                Resposta rápida pelo WhatsApp · +{settings.whatsapp_number}
+              </p>
+            </div>
           </div>
         </div>
       </div>
